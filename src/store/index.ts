@@ -1,8 +1,8 @@
-import { App, watch } from 'vue';
+import { App, inject, watch } from 'vue';
 
 import userStore from './modules/user';
 
-interface IStore<State> {
+interface IStore<State, Mutations> {
   /**
    * 是否持久化
    */
@@ -11,10 +11,13 @@ interface IStore<State> {
    * State
    */
   state: State;
+
+  mutations: Mutations;
 }
 
 // 待註冊Stores
-const Stores: Record<string, IStore<any>> = { userStore };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const Stores: Record<string, IStore<any, any>> = { userStore };
 
 /**
  * 用於安裝vue外掛的方法，需要在main.ts裡匯入並呼叫app.use()才可以整合store
@@ -26,7 +29,7 @@ const store = (app: App): void => {
   if (keys) {
     keys.forEach((item: string) => {
       // 注入
-      app.provide(item, Stores[item].state);
+      app.provide(item, { state: Stores[item].state, mutations: Stores[item].mutations });
       // 持久化，保存至localStorage
       if (Stores[item].persistedState) {
         // 讀取localStorage的值
@@ -48,5 +51,20 @@ const store = (app: App): void => {
   }
 };
 
+function useInject<State, Mutations>(
+  key: string,
+): Pick<IStore<State, Mutations>, 'state' | 'mutations'> {
+  const storeState = inject<Partial<IStore<State, Mutations>>>(key, {
+    state: {} as State,
+    mutations: {} as Mutations,
+  });
+
+  const state = storeState.state ? storeState.state : ({} as State);
+  return {
+    state,
+    mutations: storeState.mutations || ({} as Mutations),
+  };
+}
+
 export default store;
-export { IStore };
+export { IStore, useInject };

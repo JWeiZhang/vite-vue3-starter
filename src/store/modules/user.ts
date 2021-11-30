@@ -1,4 +1,4 @@
-import { reactive } from 'vue';
+import { reactive, readonly } from 'vue';
 
 import { IStore } from '../index';
 
@@ -7,12 +7,24 @@ interface UserState {
   email: string;
 }
 
-const userState: UserState = reactive({ userName: 'Wei', email: 'howard83124@gmail.com' });
+interface UserMutations {
+  updateMail: (data: string) => void;
+}
 
-const store: IStore<UserState> = {
-  state: userState,
-  persistedState: true,
+const createUserStore = (): IStore<UserState, UserMutations> => {
+  const userState: UserState = reactive({ userName: 'Wei', email: 'howard83124@gmail.com' });
+  const mutations: UserMutations = {
+    updateMail(data: string): void {
+      userState.email = data;
+    },
+  };
+
+  return {
+    state: readonly(userState),
+    persistedState: true,
+    mutations,
+  };
 };
 
-export default store;
-export { UserState };
+export default createUserStore();
+export { UserMutations, UserState };
