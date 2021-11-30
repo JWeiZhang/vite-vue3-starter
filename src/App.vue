@@ -5,13 +5,17 @@
     <img src="./assets/logo/vue.png" alt="vue" />
     <img src="./assets/logo/tailwind.svg" alt="tailwindcss" />
   </div>
+  <hello-store></hello-store>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import HelloStore from './components/HelloStore.vue';
+
 export default defineComponent({
   name: 'App',
+  components: { HelloStore },
 });
 </script>
 
