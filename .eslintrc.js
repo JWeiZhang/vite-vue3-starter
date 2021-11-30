@@ -21,9 +21,13 @@ module.exports = {
       node: {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
+      // 配置alias
+      alias: {
+        map: [['@', './src']],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
     },
   },
-
   rules: {
     'prettier/prettier': 'error',
     'import/extensions': [
