@@ -1,5 +1,5 @@
 <template>
-  <h1 class="text-6xl text-center">Vite 2.x + Vue 3.x + Tailwind 2.x</h1>
+  <h1 class="text-6xl text-center">Vite 2.x + Vue 3.x + Tailwind 3.x</h1>
   <div class="logo-container">
     <img src="./assets/logo/vite.svg" alt="vite" />
     <img src="./assets/logo/vue.png" alt="vue" />
